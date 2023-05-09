@@ -40,6 +40,14 @@ incremental: false
 
 -   Relatórios reprodutíveis
 
+### Ensino
+
+- [Curso-R](https://curso-r.com/)
+
+- [Curso de verão IME-USP](https://www.ime.usp.br/~verao/)
+
+- [CEBRAP.lab](https://cebrap.org.br/cebrap-lab/)
+
 ## Ciclo da Ciência de Dados
 
 ![](img/ciclo-ciencia-de-dados.png){fig-align="center"}
@@ -180,15 +188,18 @@ Fonte: <https://curso-r.github.io/main-dashboards/slides/02-shiny-introducao.htm
 
 - Depende do objetivo, público-alvo, etc!
 
-- Infelizmente a forma de programar nos dois é bem diferente.
+- A forma de programar nos dois é bem diferente. 
+
+- Existe algo no meio do caminho, que permite usar o shiny de forma simplificada: Flexdashboards!
 
 - Considero Quarto/RMarkdown mais fácil de aprender.
 
-- Shiny te dá muitas possibilidades, no longo prazo é interessante também :)
+- Shiny "convencional" (quero dizer, sem flexdashboards) te dá muitas possibilidades, no longo prazo é interessante também :)
+
 
 ## Vamos praticar?
 
-Link para a Cloud: *TO DO!*
+Link para a Cloud: <https://posit.cloud/content/5944113>
 
 ## Links importantes
 
