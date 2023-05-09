@@ -1,0 +1,195 @@
+---
+title: "Apresentação de resultados no R"
+subtitle: "Disciplina: Ciência de Dados <br> Programa de Pós-Graduação de Mestrado Profissional em Inovação Tecnológica <br> Universidade Federal de São Paulo - Campus São José dos Campos"
+author: "[Beatriz Milz](https://beamilz.com)"
+format: 
+  rladies-revealjs:
+    footer: "Slides por [Beatriz Milz](https://beamilz.com) (@BeaMilz), feito com [Quarto](https://quarto.org/docs/presentations/revealjs/index.html) e [Quarto R-Ladies Theme](https://github.com/beatrizmilz/quarto-rladies-theme#quarto-r-ladies-theme)."
+incremental: false
+---
+
+## Beatriz Milz
+
+-   Co-organizadora [R-Ladies São Paulo](https://rladies-sp.org)
+
+-   Professora e consultora na [Curso-R](https://curso-r.com/)
+
+-   Instrutora de Tidyverse certificada pela Posit (antiga RStudio)
+
+-   Formação acadêmica:
+
+    -   Graduação: Gestão Ambiental - EACH/USP
+    -   Mestrado: PPG-Análise Ambiental Integrada - UNIFESP Diadema
+    -   Doutorado em andamento: PPG Ciência Ambiental (PROCAM) - IEE/USP
+
+## Conteúdos que estou mais envolvida
+
+-   Meu blog: <https://beamilz.com>
+
+-   Blog da R-Ladies São Paulo: <https://rladies-sp.org/>
+
+-   Curso-R:
+
+    -   [Vídeos no youtube](https://www.youtube.com/@CursoR6)
+    -   [Blog](https://blog.curso-r.com/)
+    -   [Cursos](https://loja.curso-r.com/)
+
+## Temas favoritos em R
+
+-   Automatizar tarefas
+
+-   Relatórios reprodutíveis
+
+## Ciclo da Ciência de Dados
+
+![](img/ciclo-ciencia-de-dados.png){fig-align="center"}
+
+::: footer
+Fonte: <https://livro.curso-r.com/4-2-tidyverse.html>
+:::
+
+## Ciclo da Ciência de Dados
+
+![](img/environmental-data-science-r4ds-general.png){fig-align="center"}
+
+::: footer
+Fonte: Allison Horst (@allison_horst).
+:::
+
+## Comunicação: formatos
+
+```{r}
+#| echo: false
+exemplos <- tibble::tibble(desc = as.character(),
+               exemplos = as.character()) |>
+  
+  tibble::add_row(desc = "Blogs e sites",
+                  exemplos = "- [Site da Associação Brasileira de Jurimetria (ABJ)](https://abj.org.br/) <br>  - [RStudio AI Blog](https://blogs.rstudio.com/ai/) <br> - [Laboratório da Associação Brasileira de Jurimetria (ABJ)](https://lab.abj.org.br/)") |>
+  
+  tibble::add_row(
+                  desc = "Livros",
+                  exemplos = "- [Livro Ciência de Dados em R](https://livro.curso-r.com/) <br> - [R for Data Science](https://r4ds.had.co.nz/) <br> - [Tese de doutorado Julio Trecenti](https://jtrecenti.github.io/doutorado/)") |>
+  
+  tibble::add_row(
+                  desc = "Apresentações",
+                  exemplos = "- Essa apresentação (e a maioria das apresentadas por mim) <br> - [Apresentação da tese de doutorado do Julio Trecenti](https://jtrecenti.github.io/doutorado/defesa/#/title-slide)") |>
+  
+  tibble::add_row(
+                  desc = "Relatórios",
+                  exemplos = "- [Relatório do Observatório da Insolvência](https://abjur.github.io/obsFase2/relatorio/obs_recuperacoes_abj.pdf)") |>
+  
+    tibble::add_row(
+                  desc = "Trabalhos acadêmicos",
+                  exemplos = "- [Tese de doutorado Julio Trecenti](https://jtrecenti.github.io/doutorado/Resolvendo-Captchas.pdf)") |>
+  
+    tibble::add_row(
+                  desc = "Currículos",
+                  exemplos = "- [Currículo do William Amorim](https://williamorim.github.io/resume/) <br> - [Meu currículo](https://beatrizmilz.github.io/resume/index.pdf)") |>
+  
+    tibble::add_row(
+                  desc = "Dashboards",
+                  exemplos = "- [Tesouro Nacional: Análises sobre SICONF: Despesas com educação x IDEB](https://analise-siconfi-ideb.tesouro.gov.br/) <br> - [SoudaPaz ANALISA - Dados Online](https://sdpa.shinyapps.io/sdpa/)") |>
+
+  tibble::add_row(
+                  desc = "Tutoriais interativos",
+                  exemplos = "- [Text mining with tidy data principles](https://juliasilge.shinyapps.io/learntidytext/) <br> - [Teacups, Giraffes,  & Statistics](https://tinystats.github.io/teacups-giraffes-and-statistics/)") |>
+  
+  tibble::add_row(
+                  desc = "Artigos científicos",
+                  exemplos = "- [Artigo da minha pesquisa de mestrado](http://www.ambi-agua.net/seer/index.php/ambi-agua/article/view/2402)") |> 
+  tibble::add_row(
+                  desc = "Outros exemplos",
+                  exemplos = "[Newsletter Garimpo](https://nucleo.jor.br/newsletters/garimpo)") 
+  
+
+
+exemplos |>
+  dplyr::slice(1:2) |> 
+  knitr::kable(col.names = c("O que podemos fazer?", "Exemplos"))
+```
+
+## Comunicação: formatos \[pt. 2\]
+
+```{r}
+#| echo: false
+exemplos |>
+  dplyr::slice(3:5) |> 
+  knitr::kable(col.names = c("O que podemos fazer?", "Exemplos"))
+```
+
+## Comunicação: formatos \[pt. 3\]
+
+```{r}
+#| echo: false
+exemplos |>
+  dplyr::slice(6:dplyr::n()) |> 
+  knitr::kable(col.names = c("O que podemos fazer?", "Exemplos"))
+```
+
+## Comunicação: ferramentas
+
+-   [RMarkdown](https://rmarkdown.rstudio.com/) e [Quarto](https://quarto.org/)
+
+-   [Shiny](https://shiny.rstudio.com/)
+
+## Ideia importante: Interatividade
+
+![](img/interatividade.png){fig-align="center"}
+
+::: incremental
+-   É interessante conseguir identificar a interatividade que vem do JavaScript e a interatividade feita com código em R.
+:::
+
+::: footer
+Fonte: Elaborado pela autora.
+:::
+
+## RMarkdown e Quarto
+
+-   O R Markdown é um pacote para criação de **relatórios automatizados** utilizando as linguagens de programação R e de marcação Markdown.
+
+-   O Quarto é a **nova geração** do RMarkdown!
+
+-   O arquivo gerado é **estático**, não depende de uma sessão de R para ser aberto.
+
+-   Os elementos adicionados podem ter algum nível de interatividade (como mapas, gráficos, tabelas) utilizando bibliotecas em JavaScript.
+
+## Shiny
+
+-   Shiny é um pacote em R para criar **dashboards interativos** com R.
+
+- Melhor dos mundos para interatividade: podemos utilizar elementos que são interativos devido ao JS, e também podemos apresentar conteúdos interativos utilizando R.
+
+-   Necessita de uma sessão de R para que seja aberto!
+
+![](img/shiny.png){fig-align="center" width="50%"}
+
+::: footer
+Fonte: <https://rstudio.com/shiny/>
+:::
+
+## Shiny - Servidor e Interface do Usuário
+
+![](img/esquema_ui_servidor.png){fig-align="center" width="50%"}
+
+::: footer
+Fonte: <https://curso-r.github.io/main-dashboards/slides/02-shiny-introducao.html>
+:::
+
+## Qual usar?
+
+- Depende do objetivo, público-alvo, etc!
+
+- Infelizmente a forma de programar nos dois é bem diferente.
+
+- Considero Quarto/RMarkdown mais fácil de aprender.
+
+- Shiny te dá muitas possibilidades, no longo prazo é interessante também :)
+
+## Vamos praticar?
+
+Link para a Cloud: *TO DO!*
+
+# Obrigada!
+
+Email: [milz.bea\@gmail.com](mailto:milz.bea@gmail.com)
