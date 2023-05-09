@@ -1,0 +1,107 @@
+---
+title: "Themed dashboard"
+output: 
+  flexdashboard::flex_dashboard:
+    theme: 
+      version: 4
+      bootswatch: minty
+    orientation: columns
+    vertical_layout: fill
+runtime: shiny    
+---
+
+```{r setup, include=FALSE}
+library(flexdashboard)
+library(shiny)
+```
+
+```{r dados}
+# carrega o tidyverse
+library(tidyverse)
+
+# carrega a tabela e limpa os nomes
+barragens <- readxl::read_excel(here::here("exemplos/sigbm.xlsx"), skip = 3) |> 
+  janitor::clean_names() |> 
+    dplyr::mutate(
+    lat = parzer::parse_lat(latitude),  
+    long = parzer::parse_lon(longitude)
+  )
+```
+
+
+Column {data-width=100}
+-----------------------------------------------------------------------
+
+### Filtros
+
+```{r}
+ufs <- sort(unique(barragens$uf))
+selectInput("uf_filtrar", label = "UF", choices = ufs, selected = "MG", multiple = TRUE)
+```
+
+### Sobre essa página
+
+O Sistema Integrado de Gestão de Segurança de Barragens de Mineração (SIGBM) , gerenciado pela Agência Nacional de Mineração (ANM), disponibiliza dados sobre as barragens de mineração no Brasil.
+
+[![](https://basedosdados.org/uploads/group/2019-11-27-220428.218073anm.png){fig-align="center" width="100%"}](https://app.anm.gov.br/sigbm/publico)
+
+Existem **`r nrow(barragens)`** barragens cadastradas no SIGBM.
+
+
+Column {data-width=350  .tabset}
+-----------------------------------------------------------------------
+
+```{r}
+dados <- reactive({
+  barragens |> 
+  filter(uf %in% input$uf_filtrar) 
+})
+```
+
+
+### Gráfico
+
+```{r}
+#| out-width: "100%"
+renderPlot({
+dados() |> 
+  dplyr::count(dano_potencial_associado) |> 
+  dplyr::mutate(dpa = factor(dano_potencial_associado, c("N/A", "Baixo", "Médio", "Alto"))) |> 
+  ggplot() +
+  geom_col(aes(x = dpa, y = n), fill = "lightblue") +
+  labs(y = "Quantidade", x = "Dano potencial associado") 
+})
+```
+
+### Tabela
+
+```{r}
+renderTable({
+  dados() |> 
+    select(
+     -c(id_barragem, latitude, longitude, posicionamento, status_dce_atual, status_dco_atual, lat, long)
+    )
+})
+```
+
+### Mapa
+
+```{r}
+library(leaflet)
+leaflet::renderLeaflet({
+  dados() |> 
+  dplyr::mutate(texto = glue::glue(
+               "UF: {uf} <br>
+               ID: {id_barragem} <br> 
+               Nome da barragem: {nome_da_barragem} <br>
+               Empreendedor: {nome_do_empreendedor} <br>
+               Minério principal: {minerio_principal}"
+             )) |> 
+  leaflet() |> 
+  addProviderTiles("Esri.WorldImagery") |> 
+  addMarkers(~ long, ~lat,
+             clusterOptions = markerClusterOptions(),
+             popup = ~texto)
+})
+```
+

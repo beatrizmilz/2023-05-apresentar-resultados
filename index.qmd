@@ -190,6 +190,12 @@ Fonte: <https://curso-r.github.io/main-dashboards/slides/02-shiny-introducao.htm
 
 Link para a Cloud: *TO DO!*
 
+## Links importantes
+
+- [Temas com flexdashboard](https://pkgs.rstudio.com/flexdashboard/articles/theme.html)
+
+- [Usando flexdashboards com Shiny](https://pkgs.rstudio.com/flexdashboard/articles/shiny.html)
+
 # Obrigada!
 
 Email: [milz.bea\@gmail.com](mailto:milz.bea@gmail.com)

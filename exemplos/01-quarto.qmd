@@ -1,0 +1,63 @@
+---
+title: "Barragens de mineração no Brasil"
+author: "Bea"
+date: "2023-05-09"
+output: html_document
+theme: minty
+embed-resources: true
+knitr:
+  opts_chunk: 
+    message: false
+    warning: false
+    echo: false
+lang: pt    
+---
+
+```{r}
+#| eval: false
+# Código para baixar a tabela do SIGBM.
+# Não baixa sempre, só quando é executado manualmente.
+
+link_sigbm <-  "https://app.anm.gov.br/SIGBM/Publico/ClassificacaoNacionalDaBarragem/ExportarExcel"
+
+httr::POST(link_sigbm,
+           httr::write_disk("sigbm.xlsx", overwrite = TRUE))
+```
+
+```{r}
+# carrega o tidyverse
+library(tidyverse)
+
+# carrega a tabela e limpa os nomes
+barragens <- readxl::read_excel("sigbm.xlsx", skip = 3) |> 
+  janitor::clean_names()
+```
+
+O Sistema Integrado de Gestão de Segurança de Barragens de Mineração (SIGBM) , gerenciado pela Agência Nacional de Mineração (ANM), disponibiliza dados sobre as barragens de mineração no Brasil.
+
+[![](https://basedosdados.org/uploads/group/2019-11-27-220428.218073anm.png){fig-align="center" width="30%"}](https://app.anm.gov.br/sigbm/publico)
+
+Existem **`r nrow(barragens)`** barragens cadastradas no SIGBM.
+
+## Barragens por dano potencial associado (DPA)
+
+```{r}
+#| label: grafico-dpa
+#| fig-align: "center"
+barragens |> 
+  dplyr::count(dano_potencial_associado) |> 
+  dplyr::mutate(dpa = factor(dano_potencial_associado, c("N/A", "Baixo", "Médio", "Alto"))) |> 
+  ggplot() +
+  geom_col(aes(x = dpa, y = n), fill = "lightblue") +
+  theme_minimal() +
+  labs(y = "Quantidade", x = "Dano potencial associado")
+```
+
+## Quantidade de barragens cadastradas no [SIGBM](https://app.anm.gov.br/SIGBM/Publico/ClassificacaoNacionalDaBarragem) por UF
+
+```{r}
+#| label: tabela
+barragens |> 
+  count(uf, sort = TRUE) |> 
+  knitr::kable(col.names = c("UF", "Quantidade de Barragens"))
+```
