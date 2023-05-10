@@ -1,0 +1,80 @@
+---
+title: "Barragens de mineração"
+output: 
+  flexdashboard::flex_dashboard:
+    theme:
+      version: 4
+      bootswatch: minty
+    orientation: columns
+    vertical_layout: fill
+---
+
+```{r setup, include=FALSE}
+library(flexdashboard)
+# Install thematic and un-comment for themed static plots (i.e., ggplot2)
+# thematic::thematic_rmd()
+```
+
+```{r}
+#| eval: false
+# Código para baixar a tabela do SIGBM.
+# Não baixa sempre, só quando é executado manualmente.
+
+link_sigbm <-  "https://app.anm.gov.br/SIGBM/Publico/ClassificacaoNacionalDaBarragem/ExportarExcel"
+
+httr::POST(link_sigbm,
+           httr::write_disk("sigbm.xlsx", overwrite = TRUE))
+```
+
+```{r}
+# carrega o tidyverse
+library(tidyverse)
+
+# carrega a tabela e limpa os nomes
+barragens <- readxl::read_excel("sigbm.xlsx", skip = 3) |> 
+  janitor::clean_names()
+
+# library(janitor)
+# clean_names()
+```
+
+
+Column {data-width=100}
+-----------------------------------------------------------------------
+
+### Base de dados
+
+O Sistema Integrado de Gestão de Segurança de Barragens de Mineração (SIGBM), gerenciado pela Agência Nacional de Mineração (ANM), disponibiliza dados sobre as barragens de mineração no Brasil.
+
+![](https://basedosdados.org/uploads/group/2019-11-27-220428.218073anm.png){fig-align="center" width="50%"}
+
+Existem `r nrow(barragens)` barragens cadastradas no SIGBM.
+
+
+
+Column {data-width=350 .tabset}
+-----------------------------------------------------------------------
+
+### Gráfico
+
+```{r}
+grafico_plotly <- barragens %>%
+ ggplot() +
+  aes(x = dano_potencial_associado) +
+  geom_bar(fill = "#657F95") +
+  labs(x = "DPA", y = "Número de barragens") +
+  theme_light()
+
+plotly::ggplotly(grafico_plotly)
+
+```
+
+### Tabela
+
+```{r}
+barragens %>% 
+  count(uf, sort = TRUE) %>% 
+  DT::datatable()
+ # knitr::kable(col.names = c("UF", "Quantidade de barragens"))
+```
+
